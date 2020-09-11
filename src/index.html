@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SimpleTask</title>
+    <link rel="stylesheet" href="common.css" />
+    <link rel="stylesheet" href="index.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"
+    />
+  </head>
+  <body>
+    <div class="tabs is-fullwidth is-medium" style="margin-bottom: 0.5rem">
+      <ul>
+        <li class="is-active"><a>To-Do</a></li>
+        <li><a href="">Calendar</a></li>
+      </ul>
+    </div>
+    <section>
+      <div class="to-do">
+        <div class="daily">
+          <p id="today"></p>
+        </div>
+        <div class="daily">
+          <p id="tmrw"></p>
+        </div>
+        <div class="daily">
+          <p class="title is-4" id="day"></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="add-task">
+      <div class="content has-text-centered">
+        <button class="button is-primary" id="add-task-button">
+          Add a task
+        </button>
+      </div>
+    </section>
+
+    <div class="modal" id="add-task-modal">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Add task</p>
+          <button class="delete" aria-label="close" id="cancel-button"></button>
+        </header>
+        <section class="modal-card-body">
+          <!-- Form content ... -->
+
+          <div class="field">
+            <label class="label">Name</label>
+            <div class="control">
+              <input class="input" type="text" placeholder="Name of task" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Date</label>
+            <div class="control">
+              <input class="input" type="date" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Length</label>
+            <div class="control">
+              <input
+                class="input"
+                type="text"
+                placeholder="Estimated length of task"
+              />
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Priority</label>
+            <div class="control">
+              <div class="select">
+                <select id="form-priority">
+                  <option>Normal</option>
+                  <option>High</option>
+                  <option>Low</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Description (optional)</label>
+            <div class="control">
+              <textarea
+                class="textarea"
+                id="form-description"
+                placeholder="Optional description of the task"
+              ></textarea>
+            </div>
+          </div>
+
+          <!-- End form content ... -->
+        </section>
+        <footer class="modal-card-foot">
+          <button class="button is-success" id="add-task-form-button">
+            Add task
+          </button>
+          <button class="button" id="cancel-task-button">Cancel</button>
+        </footer>
+      </div>
+    </div>
+  </body>
+  <script src="task.js"></script>
+</html>
