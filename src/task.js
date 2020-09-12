@@ -1,3 +1,4 @@
+// Create date object and day array
 var currentDate = new Date();
 var days = [
   "Sunday",
@@ -9,6 +10,7 @@ var days = [
   "Saturday",
 ];
 
+// Task class
 class Task {
   constructor(name, date, length, priority) {
     this.name = name;
@@ -26,6 +28,8 @@ class Task {
     } */
   }
 }
+
+// Setup stores
 const Store = require("electron-store");
 
 const firstTime = {
@@ -40,24 +44,33 @@ const taskList = {
   },
 };
 
+// Create stores and tasks array
 const firstTimeCheck = new Store({ firstTime });
 const store = new Store({ taskList });
 var tasks = new Array();
 
+// Check if this is the first time running the app on this device
 if (firstTimeCheck.get("firstTime") == undefined) {
   firstTimeCheck.set("firstTime", true);
   store.set("taskList", tasks);
   console.log("First time setup!");
 }
 
+// Initialize task length variables
+let average = 0;
+let totalHrs = 0;
+let numTasks = 0;
+
 if (store.get("taskList") != undefined) {
   tasks = store.get("taskList");
+  for (let i = 0; i < tasks.length; i++) {
+    totalHrs += parseInt(tasks[i].length);
+    numTasks++;
+  }
 }
 
-var test = store.get("taskList");
-
-var day = currentDate.getDay();
-var dayName = days[day];
+var currentDay = currentDate.getDay();
+var dayName = days[currentDay];
 document.getElementById("day").innerHTML = dayName;
 
 var modal = document.getElementById("add-task-modal");
@@ -106,10 +119,11 @@ addTaskFormButton.onclick = function () {
 
   console.log(store.get("taskList"));
 
-  store.clear("tasklist");
+  // store.clear("tasklist");
 
   modal.style.display = "none";
   clearForm();
+  displayTodo();
 
   /* console.log(addName);
   console.log(addDate);
@@ -117,3 +131,45 @@ addTaskFormButton.onclick = function () {
   console.log(addPriority);
   console.log(addDescription); */
 };
+
+// Display daily to-do list:
+function displayTodo() {
+  tasks = store.get("taskList");
+
+  if (numTasks != tasks.length) {
+    totalHrs += parseInt(tasks[tasks.length - 1].length);
+    numTasks++;
+  }
+
+  if (numTasks > 0) {
+    average = totalHrs / numTasks;
+  }
+
+  console.log(tasks.length);
+
+  let taskText = "";
+
+  for (let i = 0; i < tasks.length; i++) {
+    // Use object destructuring here :)
+    taskText +=
+      tasks[i].name +
+      " - By: " +
+      tasks[i].date +
+      "<br />" +
+      " Due in " +
+      getDayDifference(currentDate, new Date(tasks[i].date)) +
+      " days.<br /> You should spend approx. " +
+      tasks[i].length +
+      " hours working on this task.";
+
+    taskText += "<hr />";
+  }
+
+  document.getElementById("day-task").innerHTML = taskText;
+}
+
+function getDayDifference(date1, date2) {
+  return Math.ceil((date2 - date1) / (1000 * 60 * 60 * 24));
+}
+
+displayTodo();
